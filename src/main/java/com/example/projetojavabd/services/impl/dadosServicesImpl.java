@@ -79,4 +79,23 @@ public class dadosServicesImpl implements dadosServices {
     public Optional<Estados> findUF(String nameEstado) {
         return dadosRepository.findById(nameEstado);
     }
+
+    public void lerFile(List<Estados> estados) {
+        if(this.dadosRepository.count() > 0) {
+            this.dadosRepository.deleteAll();
+        }
+
+        for(int i = 0; i < estados.size(); i++) {
+            createData(estados.get(i));
+        }
+    }
+
+    public void delete(String id) {
+        this.dadosRepository.deleteById(id);
+    }
+
+    public void replace(Estados estado) {
+        delete(estado.getNome());
+        createData(estado);
+    }
 }

@@ -16,4 +16,7 @@ public interface dadosServices {
     public int calcularModa(Estados data);
     public int calcularMin(Estados data);
     public int calcularMax(Estados data);
+    public void lerFile(List<Estados> estados);
+    public void delete(String nome);
+    public void replace(Estados estado);
 }
