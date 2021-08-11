@@ -1,12 +1,18 @@
 package com.example.projetojavabd.services.impl;
 
 import com.example.projetojavabd.model.Estados;
+import com.example.projetojavabd.model.dto.EstadoDTO;
 import com.example.projetojavabd.repository.dadosRepository;
 import com.example.projetojavabd.services.dadosServices;
+import org.apache.catalina.mapper.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.http.HttpStatus;
+
+import javax.persistence.EntityNotFoundException;
 
 @Service
 public class dadosServicesImpl implements dadosServices {
@@ -19,7 +25,7 @@ public class dadosServicesImpl implements dadosServices {
             media += data.getMeses().get(i).getValue();
         } return media/data.getMeses().size();
     }
-    public double calcularDP(Estados data) {
+    public double calcularDP(EstadoDTO data) {
         double desvio_p = 0;
         double media = data.getMedia();
         for(int i = 0; i < data.getMeses().size(); i++) {
@@ -28,7 +34,7 @@ public class dadosServicesImpl implements dadosServices {
         return Math.sqrt(desvio_p)/data.getMeses().size();
     }
 
-    public double calcularVariancia(Estados data) {
+    public double calcularVariancia(EstadoDTO data) {
         return Math.pow(data.getDesvio_padrao(), 2);
     }
     public int calcularModa(Estados data) {
@@ -67,17 +73,30 @@ public class dadosServicesImpl implements dadosServices {
     public List<Estados> listAll() {
         return this.dadosRepository.findAll();
     }
+
+    public EstadoDTO convertToDto(Estados estado) {
+        EstadoDTO estadoDto = new EstadoDTO();
+        estadoDto.setNome(estado.getNome());
+        estadoDto.setMeses(estado.getMeses());
+        estadoDto.setMedia(this.calcularMedia(estado));
+        estadoDto.setDesvio_padrao(this.calcularDP(estadoDto));
+        estadoDto.setVariancia(this.calcularVariancia(estadoDto));
+        estadoDto.setModa(this.calcularModa(estado));
+        estadoDto.setMax(this.calcularMax(estado));
+        estadoDto.setMin(this.calcularMin(estado));
+        return estadoDto;
+    }
+
     public Estados createData(Estados data) {
-        data.setMedia(this.calcularMedia(data));
-        data.setDesvio_padrao(this.calcularDP(data));
-        data.setVariancia(this.calcularVariancia(data));
-        data.setModa(this.calcularModa(data));
-        data.setMax(this.calcularMax(data));
-        data.setMin(this.calcularMin(data));
         return this.dadosRepository.save(data);
     }
-    public Optional<Estados> findUF(String nameEstado) {
-        return dadosRepository.findById(nameEstado);
+
+    public EstadoDTO findUF(String nameEstado) {
+        Estados estado = this.dadosRepository
+                .findById(nameEstado)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Estado " + nameEstado + "was not found"));
+        return convertToDto(estado);
     }
 
     public void lerFile(List<Estados> estados) {

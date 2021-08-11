@@ -2,6 +2,7 @@ package com.example.projetojavabd.controller;
 
 import com.example.projetojavabd.model.Estados;
 import com.example.projetojavabd.model.ValorPorMes;
+import com.example.projetojavabd.model.dto.EstadoDTO;
 import com.example.projetojavabd.services.dadosServices;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -47,7 +48,7 @@ public class dadosControler {
     }
 
     @GetMapping("/{id}")
-    public Optional<Estados> find(@PathVariable String id) {
+    public EstadoDTO find(@PathVariable String id) {
         return this.dadosServices.findUF(id);
     }
 

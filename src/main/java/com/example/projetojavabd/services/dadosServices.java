@@ -2,6 +2,7 @@ package com.example.projetojavabd.services;
 
 
 import com.example.projetojavabd.model.Estados;
+import com.example.projetojavabd.model.dto.EstadoDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,10 +10,10 @@ import java.util.Optional;
 public interface dadosServices {
     public List<Estados> listAll();
     public Estados createData(Estados data);
-    public Optional<Estados> findUF(String nameEstado);
+    public EstadoDTO findUF(String nameEstado);
     public double calcularMedia(Estados data);
-    public double calcularVariancia(Estados data);
-    public double calcularDP(Estados data);
+    public double calcularVariancia(EstadoDTO data);
+    public double calcularDP(EstadoDTO data);
     public int calcularModa(Estados data);
     public int calcularMin(Estados data);
     public int calcularMax(Estados data);

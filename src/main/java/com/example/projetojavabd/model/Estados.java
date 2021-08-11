@@ -15,10 +15,4 @@ public class Estados {
     @Id
     private String nome;
     private List<ValorPorMes> meses;
-    private double media;
-    private int moda;
-    private double variancia;
-    private double desvio_padrao;
-    private int max;
-    private int min;
 }
