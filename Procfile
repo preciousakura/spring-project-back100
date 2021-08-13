@@ -1,1 +1,0 @@
--Dspring.data.mongodb.uri=$MONGOHQ_URL
