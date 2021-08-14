@@ -4,13 +4,10 @@ import com.example.projetojavabd.model.Estados;
 import com.example.projetojavabd.model.dto.EstadoDTO;
 import com.example.projetojavabd.repository.dadosRepository;
 import com.example.projetojavabd.services.dadosServices;
-import org.apache.catalina.mapper.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Optional;
-import org.springframework.http.HttpStatus;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -71,7 +68,7 @@ public class dadosServicesImpl implements dadosServices {
     }
 
     public List<Estados> listAll() {
-        return this.dadosRepository.findAll();
+        return this.dadosRepository.findAll(Sort.by(Sort.Direction.ASC, "nome"));
     }
 
     public EstadoDTO convertToDto(Estados estado) {

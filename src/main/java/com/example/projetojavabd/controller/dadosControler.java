@@ -4,6 +4,7 @@ import com.example.projetojavabd.model.Estados;
 import com.example.projetojavabd.model.ValorPorMes;
 import com.example.projetojavabd.model.dto.EstadoDTO;
 import com.example.projetojavabd.services.dadosServices;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -13,10 +14,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 @CrossOrigin
@@ -51,6 +53,43 @@ public class dadosControler {
     public EstadoDTO find(@PathVariable String id) {
         return this.dadosServices.findUF(id);
     }
+
+    @GetMapping("/export")
+    public void exportExcelFile(HttpServletResponse response) throws IOException {
+        response.setContentType("application/octet-stream");
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=dados.xlsx";
+        response.setHeader(headerKey, headerValue);
+
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFSheet sheet = workbook.createSheet("dados");
+
+        List<Estados> dados = listAll();
+        for (int i = 0; i < dados.size() + 1; i++) {
+            if (i > 0) {
+                for (int k = 0; k < 13; k++) {
+                    Row row = sheet.getRow(k);
+                    if (k > 0)
+                        row.createCell(i).setCellValue((Integer) dados.get(i - 1).getMeses().get(k - 1).getValue());
+                    else
+                        row.createCell(i).setCellValue((String) dados.get(i - 1).getNome());
+
+                }
+            } else {
+                for (int k = 0; k < 13; k++) {
+                    Row row = sheet.createRow(k);
+                    if (k > 0)
+                        row.createCell(i).setCellValue((String) meses_ano.get(k - 1));
+                }
+            }
+        }
+
+        ServletOutputStream out = response.getOutputStream();
+        workbook.write(out);
+        workbook.close();
+        out.close();
+    }
+
 
     @PutMapping
     public ResponseEntity<Estados> replace(@RequestBody Estados estado) {

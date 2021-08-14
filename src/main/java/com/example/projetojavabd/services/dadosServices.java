@@ -5,7 +5,6 @@ import com.example.projetojavabd.model.Estados;
 import com.example.projetojavabd.model.dto.EstadoDTO;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface dadosServices {
     public List<Estados> listAll();
@@ -20,4 +19,5 @@ public interface dadosServices {
     public void lerFile(List<Estados> estados);
     public void delete(String nome);
     public void replace(Estados estado);
+
 }
