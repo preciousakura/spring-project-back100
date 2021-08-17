@@ -116,19 +116,23 @@ public class dadosControler {
             if(index > 0) {
                 Estados estado = new Estados();
                 List<ValorPorMes> meses = new ArrayList<>();
-                estado.setNome(FirstRow.getCell(index).getStringCellValue());
-                for(int i = 1; i < 13 ; i++) {
-                    ValorPorMes mes = new ValorPorMes();
-                    XSSFRow rowByColuna = worksheet.getRow(i);
-                    mes.setMes(meses_ano.get(i-1));
+                String nameEstado = FirstRow.getCell(index).getStringCellValue();
+                if(!nameEstado.isEmpty()){
+                    estado.setNome(nameEstado);
+                    for(int i = 1; i < 13 ; i++) {
+                        ValorPorMes mes = new ValorPorMes();
+                        XSSFRow rowByColuna = worksheet.getRow(i);
+                        mes.setMes(meses_ano.get(i-1));
 
-                    Integer number = (int) rowByColuna.getCell(index).getNumericCellValue();
-                    mes.setValue(number);
+                        Integer number = (int) rowByColuna.getCell(index).getNumericCellValue();
+                        mes.setValue(number);
 
-                    meses.add(mes);
+                        meses.add(mes);
+                    }
+                    estado.setMeses(meses);
+                    estadosList.add(estado);
                 }
-                estado.setMeses(meses);
-                estadosList.add(estado);
+
             }
         }
         dadosServices.lerFile(estadosList);
