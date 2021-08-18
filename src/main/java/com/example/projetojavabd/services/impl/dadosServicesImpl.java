@@ -28,7 +28,7 @@ public class dadosServicesImpl implements dadosServices {
         for(int i = 0; i < data.getMeses().size(); i++) {
             desvio_p += Math.pow(data.getMeses().get(i).getValue() - media, 2);
         }
-        return Math.sqrt(desvio_p)/data.getMeses().size();
+        return Math.sqrt(desvio_p/data.getMeses().size());
     }
 
     public double calcularVariancia(EstadoDTO data) {

@@ -117,7 +117,7 @@ public class dadosControler {
                 Estados estado = new Estados();
                 List<ValorPorMes> meses = new ArrayList<>();
                 String nameEstado = FirstRow.getCell(index).getStringCellValue();
-                if(!nameEstado.isEmpty()){
+                if(!nameEstado.isBlank())
                     estado.setNome(nameEstado);
                     for(int i = 1; i < 13 ; i++) {
                         ValorPorMes mes = new ValorPorMes();
@@ -131,11 +131,11 @@ public class dadosControler {
                     }
                     estado.setMeses(meses);
                     estadosList.add(estado);
-                }
+
 
             }
         }
         dadosServices.lerFile(estadosList);
-        return new ResponseEntity<>(estadosList, status);
+        return new ResponseEntity<>(dadosServices.listAll(), status);
     }
 }
