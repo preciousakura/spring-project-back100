@@ -134,7 +134,12 @@ public class dadosControler {
                 }
             }
         }
-        dadosServices.lerFile(estadosList);
-        return new ResponseEntity<>(dadosServices.listAll(), status);
+        if(estadosList.size() > 0) {
+            dadosServices.lerFile(estadosList);
+            return new ResponseEntity<>(dadosServices.listAll(), status);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        }
+
     }
 }
